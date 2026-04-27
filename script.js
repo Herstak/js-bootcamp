@@ -2,6 +2,7 @@ const users = [];
 const myList = document.getElementById("users-list");
 const myInput = document.getElementById("name-input");
 const myButton = document.getElementById("submit-btn");
+const myLoadButton = document.getElementById("load-btn");
 
 myButton.addEventListener('click', function(){
     const name = myInput.value.trim();
@@ -14,12 +15,29 @@ myButton.addEventListener('click', function(){
     }
 })
 
+myLoadButton.addEventListener('click', function() {
+    getUsersData();
+})
+
+async function getUsersData() {
+        try {
+            const usersResponse = await fetch("https://jsonplaceholder.typicode.com/users");
+            const usersData = await usersResponse.json();
+            const usersName = usersData.map(user => user.name);
+            usersName.forEach(function(user){
+                users.push(user);
+            });
+        } catch (error) {
+            console.log("Ошибка: ", error);
+        }
+        renderUsers();
+    }
+
 function renderUsers() {
     myList.innerHTML = "";
-    for (let i = 0; i < users.length; i++) {
+    users.forEach(function(user) {
         const newUser = document.createElement('li');
-        const newContent = document.createTextNode(users[i]);
-        newUser.appendChild(newContent);
+        newUser.textContent = user;
         myList.appendChild(newUser);
-    }
+    });
 }
