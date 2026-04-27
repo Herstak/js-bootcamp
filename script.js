@@ -1,14 +1,25 @@
+const users = [];
+const myList = document.getElementById("users-list");
 const myInput = document.getElementById("name-input");
 const myButton = document.getElementById("submit-btn");
-const myDiv = document.getElementById("greeting-box");
 
 myButton.addEventListener('click', function(){
-    let name = myInput.value.trim();
-    if (name === "" || name === null) {
-        myDiv.textContent = "Анонимы здесь не выживают.";
-        myDiv.style.color = "red";
+    const name = myInput.value.trim();
+    if (name === "") {
+        alert("Имя не может быть пустым");
     } else {
-        myDiv.textContent = `Привет, ${name}!`;
-        myDiv.style.color = "green";
+        users.push(name);
+        myInput.value = "";
+        renderUsers();
     }
 })
+
+function renderUsers() {
+    myList.innerHTML = "";
+    for (let i = 0; i < users.length; i++) {
+        const newUser = document.createElement('li');
+        const newContent = document.createTextNode(users[i]);
+        newUser.appendChild(newContent);
+        myList.appendChild(newUser);
+    }
+}
